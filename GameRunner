@@ -1,0 +1,176 @@
+package Breakout;
+
+//imports
+import java.awt.event.KeyEvent;
+
+import Utilities.GDV5;
+import Breakout.Ball;
+import Breakout.Paddle;
+import Breakout.gamePlay;
+import Breakout.startingScreen;
+
+import java.awt.Graphics2D;
+import java.awt.Color;
+
+
+public class GameRunner extends GDV5{
+	private int framecount;
+	private int bricksLeftOver = 42;
+	private Particle p;
+	private int Screen = 0;
+	private startingScreen start = new startingScreen();
+	private EndScreenOne levelOneOver = new EndScreenOne();
+	private gamePlay play = new gamePlay();
+	private Paddle paddle = new Paddle(GDV5.getMaxWindowX()/2 -50,GDV5.getMaxWindowY()-40, 130,20); 
+	private  Ball ball = new Ball(GDV5.getMaxWindowX()/2, GDV5.getMaxWindowY()/2, 20, 20);
+	private powerups powerup = new powerups(GDV5.getMaxWindowX()/2, GDV5.getMaxWindowY()/2, 12, 12);
+	private powerups2 speedreduction = new powerups2(GDV5.getMaxWindowX()/3-30, GDV5.getMaxWindowY()/2+10, 12, 12);
+	private Rules rules = new Rules();
+	private Brick[] bricks = new Brick[42];
+	
+	public GameRunner() {		
+		super();
+		setBricks();
+	}
+	//creates all the bricks and resets everything when restarting
+	public void setBricks() {
+		//sets score back to 0 after game restarts
+		play.setPoints(0);
+		ball.initializeLives();
+		powerup.extraLifeBall();
+		speedreduction.setSpeedReduction();
+		int x = 0;
+		int y = 100;
+		int brickspace = 70;
+		for (int i = 0; i < bricks.length; i++) {
+			if(i!= 0 && i % 7 == 0) {
+				y+=30;
+				x=0;
+				}
+			if (i>=0 && i<=6) {
+			bricks[i] = new Brick(x,y,70,30, Color.RED, 60, 6);
+			x += brickspace;}
+			else if (i>=7 && i<=13) {
+				bricks[i] = new Brick(x,y,70,30, Color.ORANGE, 50, 5);
+				x += brickspace;
+			}
+			else if (i>=14 && i<=20) {
+				bricks[i] = new Brick(x,y,70,30, Color.YELLOW, 40, 4);
+				x += brickspace;
+			}
+			else if (i>=21 && i<=27) {
+				bricks[i] = new Brick(x,y,70,30, Color.BLUE, 30, 3);
+				x += brickspace;
+			}
+			else if (i>=28 && i<=34) {
+				bricks[i] = new Brick(x,y,70,30, Color.CYAN, 20, 2);
+				x += brickspace;
+			}
+			else if (i>=35 && i<=41) {
+				bricks[i] = new Brick(x,y,70,30, Color.GREEN, 10, 1);
+				x += brickspace;
+			}
+					}
+	}
+	
+
+	public static void main(String[]args) {
+		GameRunner g = new GameRunner();
+		g.start();
+	}
+	
+	//sets the screens for the modes
+	public void setMode() {
+		boolean isModeChanged =false;
+		if(GDV5.KeysPressed[KeyEvent.VK_E]&& Screen != 1){
+			ball.setMode(1);
+			isModeChanged=true;}
+		if(GDV5.KeysPressed[KeyEvent.VK_N]&& Screen != 1){
+			ball.setMode(2);
+			isModeChanged=true;}
+		if(GDV5.KeysPressed[KeyEvent.VK_F]&& Screen != 1){
+			ball.setMode(3);
+			isModeChanged=true;}
+		if(isModeChanged) {
+			ball.initializeLives();
+			setBricks();
+			this.initScreen(1);
+			//plays sound when button is pressed
+			start.playButtonSound();
+			paddle.setWidth(130);}}
+	
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		if ((this.Screen != 1)) {setMode();}
+		if(GDV5.KeysPressed[KeyEvent.VK_I]&& this.Screen == 0) {this.initScreen(3);}
+		if(this.Screen==1) {updateScreen1();}
+		if((ball.getLives() == 0 && this.Screen == 1)) {this.Screen=2;}
+		 
+		if(bricksLeftOver == 0) {
+			 //so bricks/particles don't appear on ending screen
+			 framecount++;
+			 if(framecount > 30) {
+			 this.Screen = 2;}}
+			if (GDV5.KeysPressed[KeyEvent.VK_H]) {
+				this.bricksLeftOver = 42;
+				this.Screen =0; 
+				return;}}
+	
+	public void updateScreen1() {
+		boolean moveParticles=false;
+			powerup.extraLifeBall();
+			speedreduction.setSpeedReduction();
+			ball.move();
+			boolean isBallHitBrick = false;
+			if(this.p!=null) {p.move();}
+			
+			for (Brick b: bricks) {
+				if((b.isInsideBrick(ball.getX(), ball.getY())&& ball.getSpeedY()<0)) {
+					//bricks left over goes down by 1
+					bricksLeftOver--;
+					//makes brick disappear
+					b.setVisible(false);
+					//plays Sound when brick is hit
+					b.playSound();
+					//increases points (different number for each brick)
+					play.setPoints(play.getPoints() + b.getPoints());
+					moveParticles = true;
+					isBallHitBrick = true;	
+					if (moveParticles) {
+						this.p = new Particle (b);
+						p.move();}}}
+			play.Controls(ball, paddle, isBallHitBrick, powerup, speedreduction);
+			
+			//if p is pressed, paddle enlarging powerup is used
+			if(GDV5.KeysPressed[KeyEvent.VK_P]) {paddle.enlargen();}}
+
+	public void initScreen(int screenNumber) {
+		this.Screen = screenNumber;
+
+	}
+	@Override
+	public void draw(Graphics2D win) {
+		// TODO Auto-generated method stub
+		if (this.Screen == 0) {
+			start.SplashPage(win);
+				}
+		
+		if(this.Screen==1) {
+		play.Gameplay(win, ball, paddle, powerup, speedreduction);
+		for (Brick b: bricks) {
+			b.draw(win);
+		}
+		
+		}
+		
+		if (this.Screen == 2) {
+			levelOneOver.gameOver(win, ball, play.getPoints());
+		}
+		
+		if (this.Screen == 3) {
+			rules.howtoPlay(win);
+		}
+		if (p!= null) {
+			p.draw(win);
+		}}}
