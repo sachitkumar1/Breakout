@@ -1,0 +1,123 @@
+package Breakout;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+
+import Utilities.GDV5;
+
+public class gamePlay {
+	
+	private int points = 0;
+	private int timesHit= 0;
+	public void Controls(Ball ball, Paddle paddle, Boolean isBallHitBrick, powerups extralife, powerups2 speedreduction) {
+		//Paddle moves using WASD or Arrows
+		paddle.MoveWASD();
+		paddle.MoveArrows();
+	
+		//ball bounces back when it hits paddle
+		if( ball.intersects(paddle)) {
+			ball.collision();
+			//plays ball hitting sound
+			ball.playBallSound();
+			
+			//so that the paddle enlarging powerup only lasts for 3 balls
+			if(ball.intersects(paddle)&& paddle.getWidth()>130) {
+				this.timesHit ++;
+				}
+			if(this.timesHit >=3)paddle.setWidth(130);
+		
+			}
+		
+		//this adds 2 lives. This is the action for the red powerup
+		if (extralife.intersects (paddle)&& extralife.getIsVisible() == true) {
+			extralife.setIsVisible(false); 
+			extralife.collision();
+			ball.setLives(ball.getLives()+2);
+			ball.playPowerUpSound();
+		}
+		//reduces speeds by 1.2 times this is the action for the green powerup
+		if (speedreduction.intersects (paddle)&& speedreduction.getIsVisible() == true) {
+			speedreduction.setIsVisible(false); 
+			speedreduction.collision();
+			ball.setSpeedX((int)(ball.getSpeedX()/1.2));
+			ball.setSpeedY((int)(ball.getSpeedY()/1.2));
+			ball.playPowerUpSound();
+		}
+	
+		//makes it so that ball doesn't hit brick on way down, and ball speed increases after every brick. 
+		if(isBallHitBrick == true) {
+			if(ball.getSpeedY() < 0) {
+			ball.collision();
+			
+			//sets the different ways speed increases in normal and hard modes. In normal mode, speed goes up to 10, and in hard, up to 15. 
+			if((Math.abs(ball.getSpeedX()) <= 10 && Math.abs(ball.getSpeedY())<=10) && ball.getMode()==2) {
+			ball.setSpeedX((int)((double)ball.getSpeedX() * 1.2));
+			ball.setSpeedY((int)((double)ball.getSpeedY() * 1.2));
+			}
+			if((Math.abs(ball.getSpeedX()) <= 15 && Math.abs(ball.getSpeedY())<=15) && ball.getMode()==3) {
+				ball.setSpeedX((int)((double)ball.getSpeedX() * 1.2));
+				ball.setSpeedY((int)((double)ball.getSpeedY() * 1.2));
+			}
+			}
+			
+			
+		}
+			}
+	public int getPoints() {
+		return this.points;
+	}
+	
+	public void setPoints(int points) {
+		this.points = points;
+	}
+	public int getTimesHit() {
+		return timesHit;
+	}
+	public void setTimesHit(int n) {
+		this.timesHit = n;
+	}
+			
+	
+	//displays all aspects of the screen
+	public void Gameplay(Graphics2D gameplay, Ball ball, Paddle Paddle, powerups extralife, powerups2 speedreduction) {
+			//Ball
+			gameplay.setColor(ball.Color());
+			gameplay.setStroke(new BasicStroke(8));
+			gameplay.fillRect((int)ball.getX(), (int)ball.getY(), (int)ball.getWidth(), (int)ball.getHeight());
+			//extralifeball
+			if(extralife.getIsVisible() == true) {
+			gameplay.setColor(Color.RED);
+			gameplay.fillRect((int)extralife.getX(), (int)extralife.getY(), (int)extralife.getWidth(), (int)extralife.getHeight());
+			}
+			if(speedreduction.getIsVisible() == true) {
+			gameplay.setColor(Color.GREEN);
+			gameplay.fillRect((int)speedreduction.getX(), (int)speedreduction.getY(), (int)speedreduction.getWidth(), (int)speedreduction.getHeight());
+			}
+			//Paddle
+			gameplay.setColor(Color.BLUE);
+			gameplay.fillRect((int)Paddle.getX(), (int)Paddle.getY(), (int)Paddle.getWidth(), (int)Paddle.getHeight());
+			//display scores
+			gameplay.setFont(new Font("Arial", Font.PLAIN, 40));
+			gameplay.setColor(Color.WHITE);
+			gameplay.drawString("Balls: " + ball.getLives(), GDV5.getMaxWindowX()/2 - 175, GDV5.getMaxWindowY()/2 - 360 );
+			gameplay.drawString("Score: " + points, GDV5.getMaxWindowX()/2 + 10, GDV5.getMaxWindowY()/2 - 360);
+
+			gameplay.fillRect(0,0, 20, GDV5.getMaxWindowY());
+			gameplay.fillRect(GDV5.getMaxWindowX()-20,0, 20, GDV5.getMaxWindowY());
+			gameplay.fillRect(0,GDV5.getMaxWindowY()-20, GDV5.getMaxWindowX(), 20);
+			gameplay.fillRect(0,85, GDV5.getMaxWindowX(), 15);
+
+
+
+			//H to go home
+			gameplay.setFont(new Font("Arial", Font.PLAIN, 12));
+			gameplay.drawString("Press H to go home",GDV5.getMaxWindowX() - 140, GDV5.getMaxWindowY()-30);
+
+		}
+	
+
+	}
+
