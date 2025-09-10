@@ -1,0 +1,196 @@
+package Breakout;
+
+import java.awt.Rectangle;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
+
+import Utilities.GDV5;
+
+public class Ball extends Rectangle{
+	//sets color of ball
+	private Color ballcolor = Color.PINK;
+	private static int startingLives = 5;
+	private int Lives = startingLives;
+	
+
+	//sets speed of ball
+	private int mode;
+	private int speedX =5;
+	private int speedY =5;
+	
+	public Ball(int x, int y, int width, int height) {
+		super(x,y,width,height);
+	}
+	
+	public int getSpeedX() {
+		return this.speedX;
+	}
+	public int getSpeedY() {
+		return this.speedY;
+	}
+	public void setSpeedX(int n) {
+		this.speedX = n;
+	}
+	
+	public void setSpeedY(int n) {
+		this.speedY = n;
+	}
+	
+	public int getLives() {
+		return this.Lives;
+	}
+	public void setLives(int n) {
+		this.Lives = n;
+	}
+	
+	public void initializeLives() {
+		this.Lives = this.startingLives;
+	}
+
+	public int getMode() {
+		return mode;
+	}
+	public void setMode(int mode) {
+		this.mode = mode;
+	}
+	
+	
+	//moves the ball at speed set above
+	public void move() {
+		this.x += speedX;
+		this.y += speedY;
+		
+		//makes it so that ball changes direction when bounds of y are reached (bounces)
+		if(this.x +20 >= GDV5.getMaxWindowX()-20|| this.x <= 20) {
+			speedX *= -1;
+
+		}
+		else if (this.y <=100) {
+			speedY *=-1;
+		}
+		//ball resets  when max bounds of x are reached. Updates lives (# of balls left) 
+		else if (this.y >= GDV5.getMaxWindowY()-20) {
+			this.x  = GDV5.getMaxWindowX()/2;
+			this.y = GDV5.getMaxWindowY()/2;
+			speedX = 5;
+			speedY = 5;
+			Lives--;
+			//makes sure ball lost sound doesn't interfere with game over sound. 
+			if (Lives >0) {
+			playScoreSound();
+			}
+			//plays sound if all lives lost (game over)
+			if(Lives == 0) {
+				playGameOverSound();
+			}}}
+
+	
+	//when ball collides, the direction changes and ball direction changes. Also, the score in single player mode increases. 
+	public void collision(){
+		
+		speedX *= 1;
+		speedY *= -1;}
+		
+	//obtains value of ball's color
+	public Color Color() {
+		return ballcolor;}
+	
+	//sound for ball hitting
+	public void ballSound() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+		// starts the game
+		
+		File ballsound = new File("ball.wav");
+		AudioInputStream audioStream = AudioSystem.getAudioInputStream(ballsound);
+		Clip clip = AudioSystem.getClip();
+		clip.open(audioStream);	
+		clip.start();}
+	
+	//plays the ball hitting sound
+	public void playBallSound() {
+		try {
+			ballSound();
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}}
+	
+	//sound for score decreasing or lives decreasing
+	public void scoreSound() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+		File scoresound = new File("Scoreup.wav");
+		AudioInputStream audioStream = AudioSystem.getAudioInputStream(scoresound);
+		Clip clip = AudioSystem.getClip();
+		clip.open(audioStream);	
+		clip.start();}
+	
+	//plays score sound
+	public void playScoreSound() {
+		try {
+			scoreSound();
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}}
+	
+		// sound for when game finishes
+		public void gameOverSound() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+			File GameOverSound = new File("GameOver.wav");
+			AudioInputStream audioStream = AudioSystem.getAudioInputStream(GameOverSound);
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioStream);	
+			clip.start();}
+		
+		public void playGameOverSound() {
+			try {
+				gameOverSound();
+			} catch (UnsupportedAudioFileException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (LineUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}}
+		
+		//sound for collecting powerup
+		public void powerUpSound() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+			File powerupsound = new File("powerup.wav");
+			AudioInputStream audioStream = AudioSystem.getAudioInputStream(powerupsound);
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioStream);	
+			clip.start();}
+		
+		public void playPowerUpSound() {
+			try {
+				powerUpSound();
+			} catch (UnsupportedAudioFileException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (LineUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}}}
