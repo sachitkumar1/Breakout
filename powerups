@@ -1,0 +1,40 @@
+package Breakout;
+
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+
+import Utilities.GDV5;
+
+public class powerups extends Rectangle {
+	
+	private int frameCount;
+	private int speedY= 1;
+	private boolean isvisible = false;
+	private boolean extraBallVisible = false;
+	
+	public powerups(int x, int y, int width, int height) {
+		super(x,y,width,height);
+	}
+	
+	//extralifepowerup
+	public void extraLifeBall() {
+		this.frameCount++;
+		//only shows up after 30 seconds
+		if(this.frameCount > 600 && speedY > 0) {
+			isvisible=true;
+			this.y+=speedY;}}
+	
+
+//powerup ball bounces back after hitting paddle, so it doesn't keep adding lives	
+public void collision(){
+		isvisible= false;
+		speedY *= -1;}
+
+public void setIsVisible(boolean b) {
+	this.isvisible = b;}
+
+public boolean getIsVisible() {
+	return this.isvisible;}}
+
+
