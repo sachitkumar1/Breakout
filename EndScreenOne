@@ -1,0 +1,35 @@
+package Breakout;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+
+import Utilities.GDV5;
+
+public class EndScreenOne {
+	public void gameOver(Graphics2D gameOver, Ball ball, int finalscore) {
+			//changes whether "game over" or "you win" is displayed
+			if (ball.getLives() <=0) {
+				gameOver.setFont(new Font("Arial", Font.PLAIN,60));
+				gameOver.setColor(Color.RED);
+				gameOver.drawString("GAME OVER",GDV5.getMaxWindowX()/8+6, GDV5.getMaxWindowY()/3);
+				gameOver.setFont(new Font("Arial", Font.PLAIN,20));
+				gameOver.setColor(Color.WHITE);
+				gameOver.drawString("Your Score:" + finalscore, GDV5.getMaxWindowX()/8+12, GDV5.getMaxWindowY()/3 + 40);
+			}
+			else {
+				gameOver.setFont(new Font("Arial", Font.PLAIN,80));
+				gameOver.setColor(Color.BLUE);
+				gameOver.drawString("YOU WIN",GDV5.getMaxWindowX()/8 + 18, GDV5.getMaxWindowY()/3);
+				
+			}
+		//options at end of game
+			gameOver.setFont(new Font("Arial", Font.PLAIN,25));
+			gameOver.setColor(Color.WHITE);
+			gameOver.drawString("      Press H for Home", GDV5.getMaxWindowX()/2 -140, GDV5.getMaxWindowY()/2 + 40);
+			gameOver.drawString("      To reselect level", GDV5.getMaxWindowX()/2 -138, GDV5.getMaxWindowY()/2 + 80);
+
+}
+	
+	
+}
