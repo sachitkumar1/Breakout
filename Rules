@@ -1,0 +1,26 @@
+package Breakout;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+
+import Utilities.GDV5;
+
+public class Rules {
+
+	public void howtoPlay(Graphics2D howToPlay) {
+		howToPlay.setFont(new Font("Arial", Font.BOLD, 60));	
+		howToPlay.setColor(Color.PINK);
+		howToPlay.drawString("How to Play",GDV5.getMaxWindowX()/8-5, GDV5.getMaxWindowY()/2-105);
+		howToPlay.setFont(new Font("Arial",Font.PLAIN,16));
+		howToPlay.setColor(Color.WHITE);
+		howToPlay.drawString("Use W and S keys to move paddle",GDV5.getMaxWindowX()/8, GDV5.getMaxWindowY()-GDV5.getMaxWindowY()/3 - 200);
+		howToPlay.drawString("Or left and right arrow keys",GDV5.getMaxWindowX()/8, GDV5.getMaxWindowY()-GDV5.getMaxWindowY()/3 - 180);
+		howToPlay.drawString("Break all bricks using the ball and paddle",GDV5.getMaxWindowX()/8, GDV5.getMaxWindowY()-GDV5.getMaxWindowY()/3 - 150);
+		howToPlay.setColor(Color.GREEN);
+		howToPlay.drawString("The Green powerup reduces your ball's speed",GDV5.getMaxWindowX()/8, GDV5.getMaxWindowY()/2+70 );
+		howToPlay.setColor(Color.RED);
+		howToPlay.drawString("The Red powerup gives you two extra balls",GDV5.getMaxWindowX()/8, GDV5.getMaxWindowY()/2 +90);
+		howToPlay.setColor(Color.WHITE);
+		howToPlay.drawString("Press R to increase paddle size by 25% for 3 hits",GDV5.getMaxWindowX()/8, GDV5.getMaxWindowY()/2 +110);
+		howToPlay.drawString("Press H to Return Home",GDV5.getMaxWindowX()/8, GDV5.getMaxWindowY()-40);}}
