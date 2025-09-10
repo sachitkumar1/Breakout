@@ -1,0 +1,226 @@
+package Breakout;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.io.File;
+import java.io.IOException;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+public class Brick extends Rectangle {
+	private Color color;
+	private int points;
+	private int sound;
+	private boolean isVisible = true;
+	private int Dx = 1;
+	private int Dy = 1;
+	
+	public Brick(int x, int y, int width, int height, Color c, int points, int sound) {
+	super(x,y,width,height);
+	color = c;
+	this.points = points;
+	this.sound = sound;
+}
+	public void setVisible(boolean b) {
+		isVisible = b;
+		if (b==false) {
+			Particle p = new Particle (this);
+			
+			
+		}
+	
+		}
+
+	
+public int getPoints() {
+	return this.points;
+}
+public Color getColor() {
+	return this.color;
+}
+public boolean getVisible() {
+    return isVisible;
+}
+public void draw(Graphics2D pb) {
+	if(isVisible) {
+	pb.setColor(color);
+	pb.fill(this);
+}
+	
+}
+public void move() {
+	x+= Dx;
+	y += Dy;
+	
+}
+public void setDy(int Dy) {
+	this.Dy = Dy;
+	
+}
+public void setDx(int Dx) {
+	this.Dx = Dx;
+}
+
+public boolean isInsideBrick(double x1, double y1) {
+	if (this.isVisible==false)return false;
+	if (y1 < this.y) return false;
+	if(y1 > this.y+this.height)return false;
+	if (x1 <this.x)return false;
+	if (x1 > this.x + this.width)return false;
+	return true;
+	}
+
+//different pitch of sounds for every brick. Did on garage band. 
+public void playSound() {
+	if (this.sound == 1) {
+		playBrickSound1();}
+	if (this.sound == 2) {
+		playBrickSound2();}
+	if (this.sound == 3) {
+		playBrickSound3();}
+	if (this.sound == 4) {
+		playBrickSound4();}
+	if (this.sound == 5) {
+		playBrickSound5();}
+	if (this.sound == 6) {
+		playBrickSound6();}
+	
+}
+
+public void brickSound1() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+	File BrickSound = new File("BrickSound.wav");
+	AudioInputStream audioStream = AudioSystem.getAudioInputStream(BrickSound);
+	Clip clip = AudioSystem.getClip();
+	clip.open(audioStream);	
+	clip.start();
+}
+public void playBrickSound1() {
+	try {
+		brickSound1();
+	} catch (UnsupportedAudioFileException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (LineUnavailableException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+}
+public void brickSound2() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+	File BrickSound2 = new File("BrickSound2.wav");
+	AudioInputStream audioStream = AudioSystem.getAudioInputStream(BrickSound2);
+	Clip clip = AudioSystem.getClip();
+	clip.open(audioStream);	
+	clip.start();
+}
+public void playBrickSound2() {
+	try {
+		brickSound2();
+	} catch (UnsupportedAudioFileException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (LineUnavailableException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+}
+public void brickSound3() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+	File BrickSound3 = new File("BrickSound3.wav");
+	AudioInputStream audioStream = AudioSystem.getAudioInputStream(BrickSound3);
+	Clip clip = AudioSystem.getClip();
+	clip.open(audioStream);	
+	clip.start();
+}
+public void playBrickSound3() {
+	try {
+		brickSound3();
+	} catch (UnsupportedAudioFileException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (LineUnavailableException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+}
+
+public void brickSound4() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+	File BrickSound4 = new File("BrickSound4.wav");
+	AudioInputStream audioStream = AudioSystem.getAudioInputStream(BrickSound4);
+	Clip clip = AudioSystem.getClip();
+	clip.open(audioStream);	
+	clip.start();
+}
+public void playBrickSound4() {
+	try {
+		brickSound4();
+	} catch (UnsupportedAudioFileException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (LineUnavailableException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+}
+public void brickSound5() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+	File BrickSound5 = new File("BrickSound5.wav");
+	AudioInputStream audioStream = AudioSystem.getAudioInputStream(BrickSound5);
+	Clip clip = AudioSystem.getClip();
+	clip.open(audioStream);	
+	clip.start();
+}
+public void playBrickSound5() {
+	try {
+		brickSound5();
+	} catch (UnsupportedAudioFileException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (LineUnavailableException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+}
+
+public void brickSound6() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+	File BrickSound6 = new File("BrickSound6.wav");
+	AudioInputStream audioStream = AudioSystem.getAudioInputStream(BrickSound6);
+	Clip clip = AudioSystem.getClip();
+	clip.open(audioStream);	
+	clip.start();
+}
+
+public void playBrickSound6() {
+	try {
+		brickSound6();
+	} catch (UnsupportedAudioFileException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (LineUnavailableException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+}
+}
+
+
