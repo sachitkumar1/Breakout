@@ -1,0 +1,33 @@
+package Breakout;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import Utilities.GDV5;
+
+public class powerups2 extends Rectangle {
+		
+	private int frameCount;
+	private int speedY= 1;
+	private boolean isvisible = false;
+	private boolean extraBallVisible = false;
+		
+	public powerups2(int x, int y, int width, int height) {
+		super(x,y,width,height);}
+	
+	public void setSpeedReduction() {
+		this.frameCount++;
+		//only shows up after x seconds
+		if(this.frameCount > 1500 && speedY > 0) {
+			isvisible=true;
+			this.y+=speedY;}}
+		
+	public void collision(){
+		isvisible= false;
+		speedY *= -1;}
+
+	public void setIsVisible(boolean b) {
+		this.isvisible = b;}
+
+
+	public boolean getIsVisible() {
+		return this.isvisible;}}
